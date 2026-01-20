@@ -1,93 +1,192 @@
-# football-transfer
+## Általános tudnivalók és elvárások
 
+A feladat célja az általános backend fejlesztői tudás felmérése , különös tekintettel a problémamegoldó képességre, 
+az üzleti logika kezelésére és a kód minőségére. Nem egy „helyes megoldás” elkészítése a cél, hanem annak bemutatása,
+hogy a jelölt hogyan gondolkodik, tervez és valósít meg egy összetettebb funkcionális követelményrendszert.
 
+A feladat megoldása során törekedjen az önálló munkavégzésre. Amennyiben elakadás történik, lehetőség 
+van segítséget kérni e-mailben, azonban javasolt először saját megoldást keresni és döntéseket hozni.
 
-## Getting started
+A feladat értékelése során nem a funkcionalitás mennyisége, hanem a megoldás minősége, következetessége és átgondoltsága kerül előtérbe.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+A feladatok egy része egymásra épül, azonban nem mindegyik. 
+Amennyiben egy adott részfeladat megoldása során elakad, javasolt továbblépni, és a további feladatokat elvégezni a lehetőségekhez mérten.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+A feladat megoldását Git verziókezelő rendszerben kell elkészíteni és beadni.
+Kérjük, hogy a megoldás során figyeljen a tudatos és következetes commitolásra: a feladat előrehaladását több, kisebb, jól elkülöníthető commitban rögzítse.
 
-## Add your files
+A feladat megoldásához az API-k használatát dokumentálni kell. 
+Ennek érdekében az alábbi lehetőségek közül legalább az egyiket szükséges megvalósítani:
+- Swagger / OpenAPI 
+- egy Postman collection csatolása
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+---
 
+## Környezet
+
+- A projekt tartalmaz egy előre konfigurált development környezetet, amely a tesztfeladat
+megoldásához szükséges infrastruktúrát biztosítja. A repository gyökerében található a 'development' könyvtárban egy docker-compose.yml fájl.
+Ennek elindításával egy PostgreSQL adatbázis környezet indul el. A tesztfeladat során elvárás, hogy az alkalmazás ehhez az adatbázishoz csatlakozzon.
+
+- A projektben előre be vannak állítva olyan Spring Boot és kiegészítő függőségek, amelyek használata a feladat megoldása során ajánlott.
+pl.:
+  - Flyway
+  - MapStruct
+  - Lombok
+  - ...
+
+---
+
+## Feladat leírás
+
+A feladat célja egy egyszerű Spring Boot alapú backend alkalmazás elkészítése, 
+amelyben focicsapatok és az azokhoz tartozó játékosok kezelésére van lehetőség.
+
+A rendszernek alkalmasnak kell lennie csapatok és játékosok létrehozására, módosítására, lekérdezésére, 
+valamint a köztük lévő kapcsolatok kezelésére.
+
+A megoldás során elvárás az átlátható architektúra és a jól elkülönített rétegek.
+A hangsúly nem a funkcionalitás mennyiségén, hanem a megoldás minőségén, bővíthetőségén és karbantarthatóságán van.
+
+---
+
+## Feladatok:
+
+### 1. Feladat:
+Indítsa el és konfigurálja az alkalmazást úgy, hogy a lokális környezetén futó PostgreSQL adatbázishoz csatlakozzon
+(a development könyvtárban található docker-compose.yml segítségével).
+
+A konfiguráció során ügyeljen arra, hogy az adatbázis-kapcsolati beállítások kizárólag fejlesztői környezetben legyenek érvényesek
+és ne befolyásolják a későbbi, nem fejlesztői futtatást. (használj profilt)
+
+###  2. Feladat:
+Konfigurálja az alkalmazást úgy, hogy Flyway használatával a src/main/resources alatt található 
+migrációs fájlok alapján felépítse az adatbázis kezdeti állapotát.
+
+###  3. Feladat:
+Készítse el a Csapatok (Team) és Játékosok (Player) kezelésére szolgáló adatbázis táblákat, 
+valamint a hozzájuk tartozó Java osztályokat (Entity-ket).
+
+Csapat:
+- name
+- city
+- foundedYear
+- budget
+...
+
+Játékos:
+- firstName
+- lastName
+- position: Éréke következőkből választható: GK, DF, MF, FW
+- shirtNumber
+- birthDate
+- marketValue
+...
+
+### 4. Feladat:
+A. Készítse el a csapatok (Team) és játékosok (Player) kezelésére szolgáló CRUD funkcionalitást. Az alábbi API műveletek implementálása szükséges mindkét entitásra
+
+- Create – új erőforrás létrehozása
+- List – erőforrások listázása
+- Load – egy konkrét erőforrás lekérdezése azonosító alapján
+- Delete – erőforrás törlése
+
+Játékosoknál listázásnál a vissza adott objektum tartalmazza a csapat nevét (ha van neki), teljes játékos nevet összefűzve.
+Csapatok esetén tartalmazza a játékosok számát és csapat kapítány teljes nevét.
+
+Team (csapat) szabályok:
+- Csapatnév egyedi: két csapat nem hozható létre azonos name értékkel.
+- Alapítás éve érvényes: foundedYear nem lehet a jövőben (és legyen életszerű minimum).
+
+Player (játékos) szabályok:
+- Mezszám tartomány: shirtNumber csak érvényes tartományban lehet (pl. 1–99).
+- Életkor érvényesítés: birthDate alapján a játékos legyen legalább egy minimális életkor (pl. 15 év).
+- Piaci érték: marketValue nem lehet negatív.
+
+B. A fenti szabályok megsértése esetén az alkalmazásnak egységes API válaszformátumot kell visszaadnia. Ez a késöbbiekben minden 
+hibakezelésre igaz.
+Válasznak tartalmaznia kell a következőket:
+- Hiba Típusa
+- Üzenet
+- Részletek
+
+### 5. Feladat:
+Egészítse ki a játékos kezelést egy olyan API val amiben a játék átigazolása kezelhető. 
+
+Kérelmi folyamat:
+
+Az átigazolás első lépése egy átigazolási kérelem létrehozása. A kérelemnek a következőket mindenképpen kell tartalmaznia:
+- Keletkezés dátuma
+- Kérelem lejárati dátuma: Ezt követően már nem lehet elfogadni
+- Erintett játékos
+- Forrás csapat (opcionális, lehet üres),
+- Cél csapat.
+- Átigazolási összes: ha játékosnak nincs csapata akkor lehet 0
+- ...
+
+A kérelem leadását követően az átigazolási kérelem elfogadható vagy elutasítható:
+- Elutasítás esetén az átigazolás nem történik meg.
+- Elfogadás esetén az átigazolás végrehajtásra kerül.
+
+Amennyiben egy adott játékoshoz tartozó átigazolási kérelmet a rendszer elfogad, akkor minden más, ugyanarra a játékosra vonatkozó ,
+még le nem zárt kérelem automatikusan lezárásra kerül.
+
+A kérelmeket játékosonként, cél és forrás csapatonként is lehessen listázni.
+
+Átigazolás végrehajtása:
+
+Az átigazolás végrehajtása során az alkalmazásnak több üzleti szabályt kell érvényesítenie. 
+A művelet csak akkor hajtható végre, ha az átigazolni kívánt játékos létezik a rendszerben, valamint a célcsapat is létező csapat.
+Meg kell vizsgálni, hogy a cél csapat rendelkezik-e megfelelő mennyiségü kerettel. Egy csapatnak maximálisan 25 játékosa lehet.
+Sikeres átigazolás esetén a célcsapat költségkerete csökken az átigazolás értékével, míg a forráscsapat költségkerete ugyanennyivel növekszik.
+A folyamat végén a játékos csapat-hozzárendelése frissül, és a játékos a célcsapat tagjává válik.
+
+### 6. Feladat:
+Egészítse ki az átigazolás (transfer) funkcionalitást úgy, hogy sikeres átigazolás esetén a rendszer automatikusan hozzon létre egy átigazolást érvényesítő dokumentumot. 
+A dokumentumot adatbázisban kell tárolni (külön táblában), és később lekérdezhetőnek, listázhatónak kell lennie. A dokumentum egyedi azonosítóval kell rendelkeznie.
+
+- Egyedi azonosító
+- Átigazólás dátuma
+- Erintett játékos
+- Forrás csapat (opcionális, lehet üres),
+- Cél csapat.
+- Átigazolási összes
+- ...
+
+A dokumentum rendelkezzen egy emberileg is olvasható, egyedi azonosítóval, amely:
+
+- prefix + futó sorszám + suffix felépítésű
+- a futó sorszám növekvő, folyamatos sorszámozás (pl. 000014)
+- fix hosszúságú (nullákkal feltöltve)
+- példa: ATIG000014HU
+
+### 7. Feladat:
+Készítsen egy olyan apit ami az előző feladatban létrehozott dokumentumot PDF formátumba ki tudja nyomtatni. (PDF kinézete nem számít). 
+Az adattartalomnak a következőnek kell lennie:
+- Játékos teljes név
+- Forrás csapat adatok 
+- Cél csapat adatok
+- Átigazolási összeg (a játékos marketValue értéke)
+- létrehozás ideje
+
+pl.:
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/hclswd1/football-transfer.git
-git branch -M main
-git push -uf origin main
+ÁTIGAZOLÁSI DOKUMENTUM
+
+Játékos:
+Név: John Smith
+
+Forrás csapat:
+Név: FC Example
+Város: Budapest
+
+Cél csapat:
+Név: United FC
+Város: Manchester
+
+Átigazolási összeg:
+25 000 000
+
+Létrehozás ideje:
+2024-03-18 14:32
 ```
-
-## Integrate with your tools
-
-* [Set up project integrations](https://gitlab.com/hclswd1/football-transfer/-/settings/integrations)
-
-## Collaborate with your team
-
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

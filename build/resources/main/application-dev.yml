@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hclinear
+    username: hclinear
+    password: change_me
+  flyway:
+    schemas: public
+    enabled: true
+    user: hclinear
+    password: change_me
+    locations: classpath:db/migration
+
+logging:
+  level:
+    org.flywaydb: info
