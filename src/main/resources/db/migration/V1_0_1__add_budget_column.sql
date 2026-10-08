@@ -1,0 +1,1 @@
+ALTER TABLE teams ADD budget numeric(10,2);
