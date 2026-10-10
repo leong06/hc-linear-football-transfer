@@ -1,9 +1,8 @@
 package com.hcLinear.backendTest.entities;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
-import java.util.Date;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -25,7 +24,7 @@ public class PlayerEntity {
 
     private int shirtNumber;
     private LocalDate birthDate;
-    private int marketValue;
+    private BigDecimal marketValue;
 
     public TeamEntity getTeam() {
         return team;
@@ -85,15 +84,15 @@ public class PlayerEntity {
         this.birthDate = birth_date;
     }
 
-    public int getMarketValue() {
+    public BigDecimal getMarketValue() {
         return marketValue;
     }
 
-    public void setMarketValue(int market_value) {
+    public void setMarketValue(BigDecimal market_value) {
         this.marketValue = market_value;
     }
 
-    public PlayerEntity(Long id, String firstName, String lastName, Position position, int shirtNumber, LocalDate birthDate, int marketValue) {
+    public PlayerEntity(Long id, String firstName, String lastName, Position position, int shirtNumber, LocalDate birthDate, BigDecimal marketValue) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
