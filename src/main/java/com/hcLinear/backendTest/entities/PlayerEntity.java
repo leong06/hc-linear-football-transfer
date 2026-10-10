@@ -1,8 +1,10 @@
 package com.hcLinear.backendTest.entities;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "players")
@@ -10,15 +12,28 @@ public class PlayerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String first_name;
-    private String last_name;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private TeamEntity team;
+
+    private String firstName;
+    private String lastName;
 
     @Enumerated(EnumType.STRING)
     private Position position;
 
-    private int shirt_number;
-    private Date birth_date;
-    private int market_value;
+    private int shirtNumber;
+    private LocalDate birthDate;
+    private int marketValue;
+
+    public TeamEntity getTeam() {
+        return team;
+    }
+
+    public void setTeam(TeamEntity team) {
+        this.team = team;
+    }
 
     public PlayerEntity() {}
 
@@ -30,20 +45,20 @@ public class PlayerEntity {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
     public Position getPosition() {
@@ -54,37 +69,37 @@ public class PlayerEntity {
         this.position = position;
     }
 
-    public int getShirt_number() {
-        return shirt_number;
+    public int getShirtNumber() {
+        return shirtNumber;
     }
 
-    public void setShirt_number(int shirt_number) {
-        this.shirt_number = shirt_number;
+    public void setShirtNumber(int shirt_number) {
+        this.shirtNumber = shirt_number;
     }
 
-    public Date getBirth_date() {
-        return birth_date;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
+    public void setBirthDate(LocalDate birth_date) {
+        this.birthDate = birth_date;
     }
 
-    public int getMarket_value() {
-        return market_value;
+    public int getMarketValue() {
+        return marketValue;
     }
 
-    public void setMarket_value(int market_value) {
-        this.market_value = market_value;
+    public void setMarketValue(int market_value) {
+        this.marketValue = market_value;
     }
 
-    public PlayerEntity(Long id, String first_name, String last_name, Position position, int shirt_number, Date birth_date, int market_value) {
+    public PlayerEntity(Long id, String firstName, String lastName, Position position, int shirtNumber, LocalDate birthDate, int marketValue) {
         this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.position = position;
-        this.shirt_number = shirt_number;
-        this.birth_date = birth_date;
-        this.market_value = market_value;
+        this.shirtNumber = shirtNumber;
+        this.birthDate = birthDate;
+        this.marketValue = marketValue;
     }
 }
