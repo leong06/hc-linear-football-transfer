@@ -14,8 +14,11 @@ import java.util.Optional;
 @RequestMapping("/players")
 public class PlayerController {
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
+
+    public PlayerController(PlayerService playerService) {
+        this.playerService = playerService;
+    }
 
     @GetMapping
     public List<PlayerEntity> findAll() {
@@ -24,18 +27,13 @@ public class PlayerController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<PlayerEntity> findById(@PathVariable Long id) {
+    public PlayerEntity findById(@PathVariable Long id) {
         return playerService.findById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public PlayerEntity create(@RequestBody PlayerEntity player) {
-        return playerService.save(player);
-    }
-
-    @PutMapping
-    public PlayerEntity update(@RequestBody PlayerEntity player) {
         return playerService.save(player);
     }
 

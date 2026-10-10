@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.services;
 
 import com.hcLinear.backendTest.entities.PlayerEntity;
+import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.repositories.PlayerRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,9 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    public Optional<PlayerEntity> findById(Long id) {
-        return playerRepository.findById(id);
+    public PlayerEntity findById(Long id) {
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nem található a játékos a " + id + "azonosítóval!"));
     }
 
     public PlayerEntity save(PlayerEntity player) {
