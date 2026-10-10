@@ -22,7 +22,9 @@ public class PlayerController {
         return playerService.findAll();
     }
 
-    public Optional<PlayerEntity> findById(Long id) {
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<PlayerEntity> findById(@PathVariable Long id) {
         return playerService.findById(id);
     }
 
