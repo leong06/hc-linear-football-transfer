@@ -3,11 +3,11 @@ package com.hcLinear.backendTest.controllers;
 
 import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.services.TeamService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/teams")
@@ -32,7 +32,7 @@ public class TeamController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TeamEntity create(@RequestBody TeamEntity team) {
+    public TeamEntity create(@Valid @RequestBody TeamEntity team) {
         return teamService.save(team);
     }
 

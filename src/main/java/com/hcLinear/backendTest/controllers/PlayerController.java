@@ -3,12 +3,11 @@ package com.hcLinear.backendTest.controllers;
 
 import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.services.PlayerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/players")
@@ -33,7 +32,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PlayerEntity create(@RequestBody PlayerEntity player) {
+    public PlayerEntity create(@Valid @RequestBody PlayerEntity player) {
         return playerService.save(player);
     }
 
