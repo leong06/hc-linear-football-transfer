@@ -1,0 +1,1 @@
+ALTER TABLE players ALTER COLUMN market_value TYPE numeric(10,2);
