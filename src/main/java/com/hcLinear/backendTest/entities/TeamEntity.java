@@ -1,6 +1,8 @@
 package com.hcLinear.backendTest.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -10,8 +12,12 @@ public class TeamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+
+    @NotNull
     private int foundedYear;
+    @NotBlank
     private String city;
     private BigDecimal budget;
 

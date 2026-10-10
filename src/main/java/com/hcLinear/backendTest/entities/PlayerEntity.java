@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,14 +17,23 @@ public class PlayerEntity {
     @JoinColumn(name = "team_id")
     private TeamEntity team;
 
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Position position;
 
+    @Min(1) @Max(99)
     private int shirtNumber;
+
+    @NotNull
     private LocalDate birthDate;
+
+    @PositiveOrZero
     private BigDecimal marketValue;
 
     public TeamEntity getTeam() {
