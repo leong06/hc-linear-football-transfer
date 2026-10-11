@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.Year;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final TeamService teamService;
     private static final int MIN_AGE = 15;
 
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(PlayerRepository playerRepository, TeamService teamService) {
         this.playerRepository = playerRepository;
+        this.teamService = teamService;
     }
 
     public List<PlayerEntity> findAll() {
@@ -29,15 +29,20 @@ public class PlayerService {
 
     public PlayerEntity findById(Long id) {
         return playerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Nem található a játékos a " + id + "azonosítóval!"));
+                .orElseThrow(() -> new NotFoundException("Nem található a játékos a " + id + " azonosítóval!"));
     }
 
     public PlayerEntity save(PlayerEntity player)
     {
         int age = Period.between(player.getBirthDate(), LocalDate.now()).getYears();
         if (age < MIN_AGE) {
-            throw new ValidationException("A játékosnak legalább 15 évesnek kell lennie!");
+            throw new ValidationException("A játékosnak legalább " + MIN_AGE + " évesnek kell lennie!");
         }
+
+        if (player.getTeam() != null) {
+            player.setTeam(teamService.findById(player.getTeam().getId()));
+        }
+        
         return playerRepository.save(player);
     }
 

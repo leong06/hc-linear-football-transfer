@@ -31,11 +31,13 @@ public class TeamService {
     }
 
     public TeamEntity save(TeamEntity team) {
+
+        team.setName(team.getName().trim());
         int currentYear = LocalDate.now().getYear();
         if (team.getFoundedYear() > currentYear || team.getFoundedYear() < MIN_FOUNDED_YEAR) {
             throw new ValidationException("A csapat létrehozásának éve nem lehet a jelenlegi évvel nagyobb vagy a " + MIN_FOUNDED_YEAR + " évvel kisebb!");
         }
-        if (teamRepository.existsByName(team.getName().trim())) {
+        if (teamRepository.existsByName(team.getName())) {
             throw new ConflictException("A csapat neve már létezik!");
         }
 

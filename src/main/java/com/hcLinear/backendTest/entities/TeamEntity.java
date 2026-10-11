@@ -17,8 +17,10 @@ public class TeamEntity {
 
     @NotNull
     private int foundedYear;
+
     @NotBlank
     private String city;
+
     private BigDecimal budget;
 
     public TeamEntity() {}
