@@ -37,6 +37,8 @@ public class PlayerEntity {
     @NotNull
     private BigDecimal marketValue;
 
+    private boolean isCaptain;
+
     public TeamEntity getTeam() {
         return team;
     }
@@ -101,6 +103,14 @@ public class PlayerEntity {
 
     public void setMarketValue(BigDecimal market_value) {
         this.marketValue = market_value;
+    }
+
+    public boolean isCaptain() {
+        return isCaptain;
+    }
+
+    public void setCaptain(boolean captain) {
+        isCaptain = captain;
     }
 
     public PlayerEntity(Long id, String firstName, String lastName, Position position, int shirtNumber, LocalDate birthDate, BigDecimal marketValue) {
