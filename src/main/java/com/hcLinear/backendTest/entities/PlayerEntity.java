@@ -34,6 +34,7 @@ public class PlayerEntity {
     private LocalDate birthDate;
 
     @PositiveOrZero
+    @NotNull
     private BigDecimal marketValue;
 
     public TeamEntity getTeam() {

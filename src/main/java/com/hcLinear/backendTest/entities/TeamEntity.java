@@ -15,7 +15,7 @@ public class TeamEntity {
     @NotBlank
     private String name;
 
-    @NotNull
+    
     private int foundedYear;
 
     @NotBlank
