@@ -5,12 +5,14 @@ import com.hcLinear.backendTest.dto.CreateTeamDTO;
 import com.hcLinear.backendTest.dto.TeamDTO;
 import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.services.TeamService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Csapatok", description = "Csapatok kezelésére szolgáló REST API")
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
