@@ -12,13 +12,11 @@ public class TeamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+
     private String name;
 
-    
     private int foundedYear;
 
-    @NotBlank
     private String city;
 
     private BigDecimal budget;

@@ -17,24 +17,17 @@ public class PlayerEntity {
     @JoinColumn(name = "team_id")
     private TeamEntity team;
 
-    @NotBlank
     private String firstName;
 
-    @NotBlank
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private Position position;
 
-    @Min(1) @Max(99)
     private int shirtNumber;
 
-    @NotNull
     private LocalDate birthDate;
 
-    @PositiveOrZero
-    @NotNull
     private BigDecimal marketValue;
 
     private boolean captain;
