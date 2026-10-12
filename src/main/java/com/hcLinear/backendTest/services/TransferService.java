@@ -12,6 +12,8 @@ import com.hcLinear.backendTest.repositories.TransferRequestRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TransferService {
@@ -49,6 +51,27 @@ public class TransferService {
         transfer.setStatus(TransferStatus.OPEN);
 
         return transferMapper.toTransferDTO(transferRequestRepository.save(transfer));
+    }
+
+    public List<TransferDTO> findAll(Long playerId, Long sourceTeamId, Long targetTeamId){
+        List<TransferRequestEntity> transfers;
+
+        if (playerId != null){
+            transfers = transferRequestRepository.findByPlayerId(playerId);
+        } else if (sourceTeamId != null){
+            transfers = transferRequestRepository.findBySourceTeamId(sourceTeamId);
+        } else if (targetTeamId != null){
+            transfers = transferRequestRepository.findByTargetTeamId(targetTeamId);
+        } else {
+            transfers = transferRequestRepository.findAll();
+        }
+
+        List<TransferDTO> result = new ArrayList<>();
+        for (TransferRequestEntity transfer : transfers){
+            result.add(transferMapper.toTransferDTO(transfer));
+        }
+        return result;
+
     }
 
 }
