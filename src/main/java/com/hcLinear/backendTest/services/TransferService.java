@@ -1,8 +1,17 @@
 package com.hcLinear.backendTest.services;
 
+import com.hcLinear.backendTest.dto.CreateTransferDTO;
+import com.hcLinear.backendTest.dto.TransferDTO;
 import com.hcLinear.backendTest.dto.TransferMapper;
+import com.hcLinear.backendTest.entities.PlayerEntity;
+import com.hcLinear.backendTest.entities.TeamEntity;
+import com.hcLinear.backendTest.entities.TransferRequestEntity;
+import com.hcLinear.backendTest.entities.TransferStatus;
+import com.hcLinear.backendTest.exceptions.ValidationException;
 import com.hcLinear.backendTest.repositories.TransferRequestRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class TransferService {
@@ -18,6 +27,28 @@ public class TransferService {
         this.transferMapper = transferMapper;
     }
 
-    
+    public TransferDTO createTransfer(CreateTransferDTO transferRequestDTO) {
+        PlayerEntity player = playerService.findEntityById(transferRequestDTO.playerId());
+        TeamEntity targetTeam = teamService.findEntityById(transferRequestDTO.targetTeamId());
+        TeamEntity sourceTeam = player.getTeam();
+
+        if(sourceTeam != null && sourceTeam.getId().equals(targetTeam.getId())){
+            throw new ValidationException("A forrás- és célcsapat nem egyezhet meg!");
+        }
+        if(transferRequestDTO.expiresAt().isBefore(LocalDate.now())){
+            throw new ValidationException("A lejárati dátum nem lehet a mai napnál korábbi!");
+        }
+
+        TransferRequestEntity transfer = new TransferRequestEntity();
+        transfer.setPlayer(player);
+        transfer.setTargetTeam(targetTeam);
+        transfer.setSourceTeam(sourceTeam);
+        transfer.setExpiresAt(transferRequestDTO.expiresAt());
+        transfer.setAmount(transferRequestDTO.amount());
+        transfer.setCreatedAt(LocalDate.now());
+        transfer.setStatus(TransferStatus.OPEN);
+
+        return transferMapper.toTransferDTO(transferRequestRepository.save(transfer));
+    }
 
 }
