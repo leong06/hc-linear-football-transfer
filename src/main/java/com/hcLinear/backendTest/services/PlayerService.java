@@ -51,7 +51,7 @@ public class PlayerService {
         }
 
         if (player.getTeam() != null) {
-            player.setTeam(teamService.findById(player.getTeam().getId()));
+            player.setTeam(teamService.findEntityById(player.getTeam().getId()));
         }
         
         return playerRepository.save(player);

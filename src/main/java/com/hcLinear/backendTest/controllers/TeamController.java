@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.controllers;
 
 
+import com.hcLinear.backendTest.dto.TeamDTO;
 import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.services.TeamService;
 import jakarta.validation.Valid;
@@ -20,13 +21,13 @@ public class TeamController {
     }
 
     @GetMapping
-    public List<TeamEntity> findAll() {
+    public List<TeamDTO> findAll() {
         return teamService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TeamEntity findById(@PathVariable Long id) {
+    public TeamDTO findById(@PathVariable Long id) {
         return teamService.findById(id);
     }
 
