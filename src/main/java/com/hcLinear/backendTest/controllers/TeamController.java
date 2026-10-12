@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.controllers;
 
 
+import com.hcLinear.backendTest.dto.CreateTeamDTO;
 import com.hcLinear.backendTest.dto.TeamDTO;
 import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.services.TeamService;
@@ -33,7 +34,7 @@ public class TeamController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TeamEntity create(@Valid @RequestBody TeamEntity team) {
+    public TeamDTO create(@Valid @RequestBody CreateTeamDTO team) {
         return teamService.save(team);
     }
 

@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.controllers;
 
 
+import com.hcLinear.backendTest.dto.CreatePlayerDTO;
 import com.hcLinear.backendTest.dto.PlayerDTO;
 import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.services.PlayerService;
@@ -33,7 +34,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PlayerEntity create(@Valid @RequestBody PlayerEntity player) {
+    public PlayerDTO create(@Valid @RequestBody CreatePlayerDTO player) {
         return playerService.save(player);
     }
 

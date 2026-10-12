@@ -1,5 +1,6 @@
 package com.hcLinear.backendTest.services;
 
+import com.hcLinear.backendTest.dto.CreatePlayerDTO;
 import com.hcLinear.backendTest.dto.PlayerDTO;
 import com.hcLinear.backendTest.dto.PlayerMapper;
 import com.hcLinear.backendTest.entities.PlayerEntity;
@@ -44,8 +45,9 @@ public class PlayerService {
         return playerMapper.toPlayerDTO(player);
     }
 
-    public PlayerEntity save(PlayerEntity player)
+    public PlayerDTO save(CreatePlayerDTO createPlayerDTO)
     {
+        PlayerEntity player = playerMapper.toPlayerEntity(createPlayerDTO);
         int age = Period.between(player.getBirthDate(), LocalDate.now()).getYears();
         if (age < MIN_AGE) {
             throw new ValidationException("A játékosnak legalább " + MIN_AGE + " évesnek kell lennie!");
@@ -63,8 +65,8 @@ public class PlayerService {
                 throw new ConflictException("Csapatban már van csapatkapitány!");
             }
         }
-        
-        return playerRepository.save(player);
+
+        return playerMapper.toPlayerDTO(playerRepository.save(player));
     }
 
     public void deleteById(Long id) {

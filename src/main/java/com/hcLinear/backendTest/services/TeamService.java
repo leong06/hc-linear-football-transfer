@@ -1,5 +1,6 @@
 package com.hcLinear.backendTest.services;
 
+import com.hcLinear.backendTest.dto.CreateTeamDTO;
 import com.hcLinear.backendTest.dto.TeamDTO;
 import com.hcLinear.backendTest.dto.TeamMapper;
 import com.hcLinear.backendTest.entities.PlayerEntity;
@@ -63,7 +64,9 @@ public class TeamService {
                 .orElseThrow(() -> new NotFoundException("Nem található a csapat a " + id + "azonosítóval!"));
     }
 
-    public TeamEntity save(TeamEntity team) {
+    public TeamDTO save(CreateTeamDTO createTeamDTO) {
+
+        TeamEntity team = teamMapper.toTeamEntity(createTeamDTO);
 
         team.setName(team.getName().trim());
         int currentYear = LocalDate.now().getYear();
@@ -74,7 +77,7 @@ public class TeamService {
             throw new ConflictException("A csapat neve már létezik!");
         }
 
-        return teamRepository.save(team);
+        return teamToTeamDTO(teamRepository.save(team));
     }
 
     public void deleteById(Long id) {
