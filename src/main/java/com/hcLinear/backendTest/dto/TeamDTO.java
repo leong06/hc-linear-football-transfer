@@ -1,5 +1,6 @@
 package com.hcLinear.backendTest.dto;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public record TeamDTO(
@@ -7,7 +8,7 @@ public record TeamDTO(
         String name,
         String city,
         int foundedYear,
-        BigInteger budget,
+        BigDecimal budget,
         long playerCount,
         String captainName
 ) {

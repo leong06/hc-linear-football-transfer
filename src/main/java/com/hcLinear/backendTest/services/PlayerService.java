@@ -53,7 +53,7 @@ public class PlayerService {
             throw new ValidationException("A játékosnak legalább " + MIN_AGE + " évesnek kell lennie!");
         }
 
-        if (player.getTeam() != null) {
+        if (createPlayerDTO.teamId() != null) {
             player.setTeam(teamService.findEntityById(player.getTeam().getId()));
         }
 
