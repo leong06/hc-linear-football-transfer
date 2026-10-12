@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/transfers")
 public class TransferController {
@@ -22,5 +24,15 @@ public class TransferController {
     public TransferDTO createTransfer(@Valid @RequestBody CreateTransferDTO request) {
         return transferService.createTransfer(request);
     }
+
+    @GetMapping
+    public List<TransferDTO> findAll(
+        @RequestParam(required = false) Long playerId,
+        @RequestParam(required = false) Long sourceTeamId,
+        @RequestParam(required = false) Long targetTeamId){
+        return transferService.findAll(playerId, sourceTeamId, targetTeamId);
+    }
+
+
 
 }
