@@ -11,4 +11,9 @@ public interface PlayerMapper {
     @Mapping(target = "teamName", source = "team.name")
     PlayerDTO toPlayerDTO(PlayerEntity player);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "team", ignore = true)
+    PlayerEntity toPlayerEntity(CreatePlayerDTO createPlayerDTO);
+
+
 }
