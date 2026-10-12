@@ -1,5 +1,7 @@
 package com.hcLinear.backendTest.services;
 
+import com.hcLinear.backendTest.dto.PlayerDTO;
+import com.hcLinear.backendTest.dto.PlayerMapper;
 import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.exceptions.ValidationException;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,20 +19,28 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final TeamService teamService;
+    private final PlayerMapper playerMapper;
     private static final int MIN_AGE = 15;
 
-    public PlayerService(PlayerRepository playerRepository, TeamService teamService) {
+    public PlayerService(PlayerRepository playerRepository, TeamService teamService, PlayerMapper playerMapper) {
         this.playerRepository = playerRepository;
         this.teamService = teamService;
+        this.playerMapper = playerMapper;
     }
 
-    public List<PlayerEntity> findAll() {
-        return playerRepository.findAll();
+    public List<PlayerDTO> findAll() {
+        List<PlayerDTO> players = new ArrayList<>();
+        for(PlayerEntity player : playerRepository.findAll()) {
+            players.add(playerMapper.toPlayerDTO(player));
+        }
+
+        return players;
     }
 
-    public PlayerEntity findById(Long id) {
-        return playerRepository.findById(id)
+    public PlayerDTO findById(Long id) {
+        PlayerEntity player = playerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Nem található a játékos a " + id + " azonosítóval!"));
+        return playerMapper.toPlayerDTO(player);
     }
 
     public PlayerEntity save(PlayerEntity player)

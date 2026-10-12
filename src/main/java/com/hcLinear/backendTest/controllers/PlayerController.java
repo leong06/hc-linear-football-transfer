@@ -1,6 +1,7 @@
 package com.hcLinear.backendTest.controllers;
 
 
+import com.hcLinear.backendTest.dto.PlayerDTO;
 import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.services.PlayerService;
 import jakarta.validation.Valid;
@@ -20,13 +21,13 @@ public class PlayerController {
     }
 
     @GetMapping
-    public List<PlayerEntity> findAll() {
+    public List<PlayerDTO> findAll() {
         return playerService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PlayerEntity findById(@PathVariable Long id) {
+    public PlayerDTO findById(@PathVariable Long id) {
         return playerService.findById(id);
     }
 
