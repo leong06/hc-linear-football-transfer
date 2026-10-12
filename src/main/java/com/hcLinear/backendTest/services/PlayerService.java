@@ -3,6 +3,7 @@ package com.hcLinear.backendTest.services;
 import com.hcLinear.backendTest.dto.PlayerDTO;
 import com.hcLinear.backendTest.dto.PlayerMapper;
 import com.hcLinear.backendTest.entities.PlayerEntity;
+import com.hcLinear.backendTest.exceptions.ConflictException;
 import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.exceptions.ValidationException;
 import com.hcLinear.backendTest.repositories.PlayerRepository;
@@ -52,6 +53,15 @@ public class PlayerService {
 
         if (player.getTeam() != null) {
             player.setTeam(teamService.findEntityById(player.getTeam().getId()));
+        }
+
+        if(player.isCaptain()) {
+            if(player.getTeam() == null){
+                throw new ValidationException("Csapat nélküli játékos nem lehet csapatkapitány!");
+            }
+            if(playerRepository.existsByTeamIdAndCaptainTrue(player.getTeam().getId())){
+                throw new ConflictException("Csapatban már van csapatkapitány!");
+            }
         }
         
         return playerRepository.save(player);
