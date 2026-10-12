@@ -45,6 +45,12 @@ public class PlayerService {
         return playerMapper.toPlayerDTO(player);
     }
 
+    public PlayerEntity findEntityById(Long id) {
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nem található a játékos a " + id + " azonosítóval!"));
+    }
+
+
     public PlayerDTO save(CreatePlayerDTO createPlayerDTO)
     {
         PlayerEntity player = playerMapper.toPlayerEntity(createPlayerDTO);
@@ -54,7 +60,7 @@ public class PlayerService {
         }
 
         if (createPlayerDTO.teamId() != null) {
-            player.setTeam(teamService.findEntityById(player.getTeam().getId()));
+            player.setTeam(teamService.findEntityById(createPlayerDTO.teamId()));
         }
 
         if(player.isCaptain()) {
