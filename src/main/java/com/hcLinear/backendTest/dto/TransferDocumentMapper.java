@@ -9,7 +9,7 @@ public interface TransferDocumentMapper {
 
     @Mapping(target = "transferRequestId", source = "transferRequest.id")
     @Mapping(target = "playerId", source = "player.id")
-    @Mapping(target = "playerName", expression = "java(document.getPlayer().getFirstName() + \" \" + document.getPlayer().getLastName())")
+    @Mapping(target = "playerName", expression = "java(transferDocumentEntity.getPlayer().getFirstName() + \" \" + transferDocumentEntity.getPlayer().getLastName())")
     @Mapping(target = "sourceTeamId", source = "sourceTeam.id")
     @Mapping(target = "sourceTeamName", source = "sourceTeam.name")
     @Mapping(target = "targetTeamId", source = "targetTeam.id")

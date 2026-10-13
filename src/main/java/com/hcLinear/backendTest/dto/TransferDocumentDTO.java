@@ -9,6 +9,7 @@ public record TransferDocumentDTO(
         LocalDateTime createdAt,
         Long transferRequestId,
         Long playerId,
+        String playerName,
         Long sourceTeamId,
         String sourceTeamName,
         Long targetTeamId,
