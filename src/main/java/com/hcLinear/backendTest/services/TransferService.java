@@ -10,8 +10,10 @@ import com.hcLinear.backendTest.entities.TransferStatus;
 import com.hcLinear.backendTest.exceptions.ConflictException;
 import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.exceptions.ValidationException;
+import com.hcLinear.backendTest.repositories.PlayerRepository;
 import com.hcLinear.backendTest.repositories.TransferRequestRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,12 +23,15 @@ import java.util.List;
 public class TransferService {
     private final TransferRequestRepository transferRequestRepository;
     private final PlayerService playerService;
+    private final PlayerRepository playerRepository;
     private final TeamService teamService;
     private final TransferMapper transferMapper;
+    private static final int MAX_TEAM_SIZE = 25;
 
-    public TransferService(TransferRequestRepository transferRequestRepository, PlayerService playerService, TeamService teamService, TransferMapper transferMapper) {
+    public TransferService(TransferRequestRepository transferRequestRepository, PlayerService playerService, PlayerRepository playerRepository, TeamService teamService, TransferMapper transferMapper) {
         this.transferRequestRepository = transferRequestRepository;
         this.playerService = playerService;
+        this.playerRepository = playerRepository;
         this.teamService = teamService;
         this.transferMapper = transferMapper;
     }
@@ -84,6 +89,51 @@ public class TransferService {
         transfer.setStatus(TransferStatus.REJECTED);
         return transferMapper.toTransferDTO(transferRequestRepository.save(transfer));
     }
+
+    @Transactional
+    public TransferDTO acceptTransfer(Long id){
+        TransferRequestEntity transfer = findEntityById(id);
+        long targetTeamSize = playerRepository.countByTeamId(transfer.getTargetTeam().getId());
+        PlayerEntity player = transfer.getPlayer();
+        TeamEntity targetTeam = transfer.getTargetTeam();
+        TeamEntity sourceTeam = transfer.getSourceTeam();
+        List<TransferRequestEntity> transferRequests = transferRequestRepository.findByPlayerIdAndStatus(player.getId(), TransferStatus.OPEN);
+
+
+        if(transfer.getStatus() != TransferStatus.OPEN){
+            throw new ConflictException("Csak nyitott átigazolás fogadható el!");
+        }
+        if(transfer.getExpiresAt().isBefore(LocalDate.now())){
+            throw new ConflictException("Az átigazolás lejárt!");
+        }
+        if(targetTeamSize >= MAX_TEAM_SIZE){
+            throw new ConflictException("A cél csapat kerete betelt!");
+        }
+        if(targetTeam.getBudget().compareTo(transfer.getAmount()) < 0){
+            throw new ConflictException("Nincs elég pénz a forrás csapatban!");
+        }
+
+        targetTeam.setBudget(
+                targetTeam.getBudget().subtract(transfer.getAmount()));
+        if(sourceTeam != null){
+            sourceTeam.setBudget(
+                    sourceTeam.getBudget().add(transfer.getAmount()));
+        }
+        player.setTeam(targetTeam);
+        player.setCaptain(false);
+        transfer.setStatus(TransferStatus.ACCEPTED);
+
+        for(TransferRequestEntity transferRequest : transferRequests){
+            if(transferRequest.getId().equals(id)){
+                continue;
+            }
+            transferRequest.setStatus(TransferStatus.REJECTED);
+        }
+
+
+        return transferMapper.toTransferDTO(transfer);
+    }
+
 
 
     private TransferRequestEntity findEntityById(Long id){

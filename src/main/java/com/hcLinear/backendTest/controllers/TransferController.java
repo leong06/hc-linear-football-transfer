@@ -38,6 +38,11 @@ public class TransferController {
         return transferService.rejectTransfer(id);
     }
 
+    @PostMapping("/{id}/accept")
+    public TransferDTO acceptTransfer(@PathVariable Long id){
+        return transferService.acceptTransfer(id);
+    }
+
 
 
 
