@@ -33,6 +33,12 @@ public class TransferController {
         return transferService.findAll(playerId, sourceTeamId, targetTeamId);
     }
 
+    @PostMapping("/{id}/reject")
+    public TransferDTO rejectTransfer(@PathVariable Long id){
+        return transferService.rejectTransfer(id);
+    }
+
+
 
 
 }

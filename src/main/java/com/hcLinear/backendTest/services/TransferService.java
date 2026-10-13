@@ -7,6 +7,8 @@ import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.entities.TransferRequestEntity;
 import com.hcLinear.backendTest.entities.TransferStatus;
+import com.hcLinear.backendTest.exceptions.ConflictException;
+import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.exceptions.ValidationException;
 import com.hcLinear.backendTest.repositories.TransferRequestRepository;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,22 @@ public class TransferService {
         return result;
 
     }
+
+    public TransferDTO rejectTransfer(Long id){
+        TransferRequestEntity transfer = findEntityById(id);
+        if(transfer.getStatus() != TransferStatus.OPEN){
+            throw new ConflictException("Csak nyitott átigazolás utasítható el!");
+        }
+        transfer.setStatus(TransferStatus.REJECTED);
+        return transferMapper.toTransferDTO(transferRequestRepository.save(transfer));
+    }
+
+
+    private TransferRequestEntity findEntityById(Long id){
+        return transferRequestRepository.findById(id).orElseThrow(() -> new NotFoundException("Az átigazolás nem található!"));
+    }
+
+    
+
 
 }
