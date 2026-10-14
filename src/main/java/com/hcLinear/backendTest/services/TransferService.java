@@ -3,10 +3,7 @@ package com.hcLinear.backendTest.services;
 import com.hcLinear.backendTest.dto.CreateTransferDTO;
 import com.hcLinear.backendTest.dto.TransferDTO;
 import com.hcLinear.backendTest.dto.TransferMapper;
-import com.hcLinear.backendTest.entities.PlayerEntity;
-import com.hcLinear.backendTest.entities.TeamEntity;
-import com.hcLinear.backendTest.entities.TransferRequestEntity;
-import com.hcLinear.backendTest.entities.TransferStatus;
+import com.hcLinear.backendTest.entities.*;
 import com.hcLinear.backendTest.exceptions.ConflictException;
 import com.hcLinear.backendTest.exceptions.NotFoundException;
 import com.hcLinear.backendTest.exceptions.ValidationException;
@@ -26,14 +23,16 @@ public class TransferService {
     private final PlayerRepository playerRepository;
     private final TeamService teamService;
     private final TransferMapper transferMapper;
+    private final TransferDocumentService transferDocumentService;
     private static final int MAX_TEAM_SIZE = 25;
 
-    public TransferService(TransferRequestRepository transferRequestRepository, PlayerService playerService, PlayerRepository playerRepository, TeamService teamService, TransferMapper transferMapper) {
+    public TransferService(TransferRequestRepository transferRequestRepository, PlayerService playerService, PlayerRepository playerRepository, TeamService teamService, TransferMapper transferMapper, TransferDocumentService transferDocumentService) {
         this.transferRequestRepository = transferRequestRepository;
         this.playerService = playerService;
         this.playerRepository = playerRepository;
         this.teamService = teamService;
         this.transferMapper = transferMapper;
+        this.transferDocumentService = transferDocumentService;
     }
 
     public TransferDTO createTransfer(CreateTransferDTO transferRequestDTO) {
@@ -130,7 +129,7 @@ public class TransferService {
             transferRequest.setStatus(TransferStatus.REJECTED);
         }
 
-
+        transferDocumentService.createDocument(transfer);
         return transferMapper.toTransferDTO(transfer);
     }
 
