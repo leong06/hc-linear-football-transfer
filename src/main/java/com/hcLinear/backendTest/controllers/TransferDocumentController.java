@@ -4,6 +4,7 @@ import com.hcLinear.backendTest.dto.TransferDocumentDTO;
 import com.hcLinear.backendTest.entities.TransferDocumentEntity;
 import com.hcLinear.backendTest.services.TransferDocumentService;
 import com.hcLinear.backendTest.services.TransferDocumentToPDFService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,10 @@ public class TransferDocumentController {
     public ResponseEntity<byte[]> documentToPDF(@PathVariable Long id){
         TransferDocumentEntity document = transferDocumentService.findEntityById(id);
         byte[] pdf_document = transferDocumentToPDFService.generatePDF(document);
-        return ResponseEntity.ok(pdf_document);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header("Content-Disposition", "attachment; filename=transfer_document.pdf")
+                .body(pdf_document);
     }
 
 
