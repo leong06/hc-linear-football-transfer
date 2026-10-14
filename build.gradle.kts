@@ -24,6 +24,7 @@ dependencies {
 	val postgresqlVersion = "42.7.7"
 	val flywayCoreVersion = "9.16.3"
 	val swaggerVersion = "2.3.0"
+	val openPdfVersion = "1.3.43"
 
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -33,6 +34,7 @@ dependencies {
 	implementation("org.projectlombok:lombok:${lombokVersion}")
 	implementation("org.flywaydb:flyway-core:${flywayCoreVersion}")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swaggerVersion}")
+	implementation("com.github.librepdf:openpdf:${openPdfVersion}")
 
 	runtimeOnly("org.postgresql:postgresql:${postgresqlVersion}")
 
