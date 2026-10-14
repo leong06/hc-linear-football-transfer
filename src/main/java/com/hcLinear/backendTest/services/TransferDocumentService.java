@@ -53,6 +53,12 @@ public class TransferDocumentService {
                 .orElseThrow(() ->  new NotFoundException("A dokumentum nem található a megadott ID-vel: " + id)));
     }
 
+    public TransferDocumentEntity findEntityById(Long id){
+        return transferDocumentRepository.findById(id)
+                .orElseThrow(() ->  new NotFoundException("A dokumentum nem található a megadott ID-vel: " + id));
+    }
+
+
 
 
 
