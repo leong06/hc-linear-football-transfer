@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class TransferDocumentToPDFService {
@@ -51,7 +52,7 @@ public class TransferDocumentToPDFService {
             document.add(new Paragraph("Város: " +targetTeam.getCity(), textFont));
 
             document.add(new Paragraph("Átigazolási összeg: \n" + transferDocument.getAmount() + " Ft", textFont));
-            document.add(new Paragraph("Létrehozás ideje: " + transferDocument.getCreatedAt(), textFont));
+            document.add(new Paragraph("Létrehozás ideje: " + transferDocument.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), textFont));
 
 
 
