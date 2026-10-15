@@ -25,6 +25,9 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+
+    @Operation(summary = "Játékosok listázása", description = "Visszaadja az összes játékost")
+    @ApiResponse(responseCode = "200", description = "Játékosok listázása")
     @GetMapping
     public List<PlayerDTO> findAll() {
         return playerService.findAll();
@@ -39,12 +42,20 @@ public class PlayerController {
         return playerService.findById(id);
     }
 
+
+    @Operation(summary = "Játékos létrehozása", description = "Új játékos létrehozása")
+    @ApiResponse(responseCode = "201", description = "Játékos létrehozva")
+    @ApiResponse(responseCode = "400", description = "Érvénytelen adatok")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public PlayerDTO create(@Valid @RequestBody CreatePlayerDTO player) {
         return playerService.save(player);
     }
 
+
+    @Operation(summary = "Játékos törlése azonosító alapján", description = "A megadott azonosítójú játékos törlése")
+    @ApiResponse(responseCode = "204", description = "Játékos törlése sikeres")
+    @ApiResponse(responseCode = "404", description = "A megadott azonosítójú játékos nem található")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
