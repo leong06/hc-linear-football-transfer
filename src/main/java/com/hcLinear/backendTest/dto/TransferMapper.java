@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 public interface TransferMapper {
 
     @Mapping(target = "playerId", source = "player.id")
-    @Mapping(target = "playerName", expression = "java(transfer.getPlayer().getLastName() + \" \" + transfer.getPlayer().getFirstName())")
+    @Mapping(target = "playerName", expression = "java(transfer.getPlayer().getFirstName() + \" \" + transfer.getPlayer().getLastName())")
     @Mapping(target = "sourceTeamName", source = "sourceTeam.name")
     @Mapping(target = "sourceTeamId", source = "sourceTeam.id")
     @Mapping(target = "targetTeamName", source = "targetTeam.name")

@@ -37,7 +37,7 @@ public class TransferDocumentToPDFService {
             // PDF létrehozása
             document.add(new Paragraph("ÁTIGAZOLÁSI DOKUMENTUM \n", textFont));
             document.add(new Paragraph("Játékos: \n", textFont));
-            document.add(new Paragraph("Név: " + player.getLastName() + " " + player.getFirstName(), textFont));
+            document.add(new Paragraph("Név: " + player.getFirstName() + " " + player.getLastName(), textFont));
             document.add(new Paragraph("Forrás csapat: \n", textFont));
 
             if(sourceTeam != null){
