@@ -3,7 +3,6 @@ package com.hcLinear.backendTest.controllers;
 
 import com.hcLinear.backendTest.dto.CreateTeamDTO;
 import com.hcLinear.backendTest.dto.TeamDTO;
-import com.hcLinear.backendTest.entities.TeamEntity;
 import com.hcLinear.backendTest.services.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

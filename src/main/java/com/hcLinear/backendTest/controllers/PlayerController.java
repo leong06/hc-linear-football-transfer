@@ -3,7 +3,6 @@ package com.hcLinear.backendTest.controllers;
 
 import com.hcLinear.backendTest.dto.CreatePlayerDTO;
 import com.hcLinear.backendTest.dto.PlayerDTO;
-import com.hcLinear.backendTest.entities.PlayerEntity;
 import com.hcLinear.backendTest.services.PlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
